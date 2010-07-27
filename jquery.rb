@@ -23,6 +23,12 @@ initializer 'jquery.rb', <<-CODE
 # the default prototype helpers.
 # Credits: http://webtech.union.rpi.edu/blog/2010/02/21/jquery-and-rails-3/
 
-ActionView::Helpers::AssetTagHelper.javascript_expansions.clear
-ActionView::Helpers::AssetTagHelper::register_javascript_expansion :defaults => ['jquery', 'rails']
+# Override the javascript defaults once ActionView is loaded and the app has been initialized.
+# Otherwise ActionView's railtie initializer will overwrite our changes.
+ActiveSupport.on_load(:action_view) do
+  ActiveSupport.on_load(:after_initialize) do
+    ActionView::Helpers::AssetTagHelper.javascript_expansions.clear
+    ActionView::Helpers::AssetTagHelper::register_javascript_expansion :defaults => ['jquery', 'rails']
+  end
+end
 CODE
