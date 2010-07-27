@@ -22,9 +22,7 @@ initializer 'jquery.rb', <<-CODE
 # Switch the javascript_include_tag :defaults to use jQuery instead of
 # the default prototype helpers.
 # Credits: http://webtech.union.rpi.edu/blog/2010/02/21/jquery-and-rails-3/
-if ActionView::Helpers::AssetTagHelper.const_defined?(:JAVASCRIPT_DEFAULT_SOURCES)
-	ActionView::Helpers::AssetTagHelper.send(:remove_const, \"JAVASCRIPT_DEFAULT_SOURCES\")
-end
-ActionView::Helpers::AssetTagHelper::JAVASCRIPT_DEFAULT_SOURCES = ['jquery', 'rails']
-ActionView::Helpers::AssetTagHelper::reset_javascript_include_default
+
+ActionView::Helpers::AssetTagHelper.javascript_expansions.clear
+ActionView::Helpers::AssetTagHelper::register_javascript_expansion :defaults => ['jquery', 'rails']
 CODE
